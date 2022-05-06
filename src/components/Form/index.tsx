@@ -4,6 +4,8 @@ import { Image, Text, TextInput, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { theme } from "../../theme";
 import { feedbackTypes } from "../../utils/feedbackTypes";
+import { Button } from "../Button";
+import { ScreenshotButton } from "../ScreenshotButton";
 import { feedbackType } from "../Widget";
 
 import { styles } from "./styles";
@@ -34,6 +36,14 @@ export function Form({ feedbackType }: Props) {
         placeholder="Algo não está funcionando bem? Queremos corrigir. Conte com detalhes o que está acontecendo..."
         placeholderTextColor={theme.colors.text_secondary}
       />
+      <View style={styles.footer}>
+        <ScreenshotButton
+          onRemoveShot={() => {}}
+          onTakeShot={() => {}}
+          screenshot="https://github.com/djairmaykon.png"
+        />
+        <Button isLoading={false} />
+      </View>
     </View>
   );
 }
