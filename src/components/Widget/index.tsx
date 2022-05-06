@@ -4,6 +4,7 @@ import React, { useRef } from "react";
 import { TouchableOpacity } from "react-native";
 import { gestureHandlerRootHOC } from "react-native-gesture-handler";
 import { theme } from "../../theme";
+import { Options } from "../Options";
 
 import { styles } from "./styles";
 
@@ -28,7 +29,9 @@ function Widget() {
         snapPoints={[1, 280]}
         backgroundStyle={styles.modal}
         handleIndicatorStyle={styles.indicator}
-      ></BottomSheet>
+      >
+        <Options />
+      </BottomSheet>
     </>
   );
 }
