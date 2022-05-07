@@ -10,14 +10,21 @@ import { ScreenshotButton } from "../ScreenshotButton";
 import { feedbackType } from "../Widget";
 
 import { styles } from "./styles";
+import { api } from "../../libs/api";
 
 interface Props {
   feedbackType: feedbackType;
   onFeedbackCancelled: () => void;
   onFeedbackSent: () => void;
 }
-export function Form({ feedbackType, onFeedbackCancelled }: Props) {
+export function Form({
+  feedbackType,
+  onFeedbackCancelled,
+  onFeedbackSent,
+}: Props) {
+  const [isSendingFeedback, setIsSendingFeedback] = useState<boolean>(false);
   const [screenshot, setScreenshot] = useState<string | null>();
+  const [comment, setComment] = useState<string>("");
 
   const feedback = feedbackTypes[feedbackType];
 
@@ -28,6 +35,25 @@ export function Form({ feedbackType, onFeedbackCancelled }: Props) {
     })
       .then((uri) => setScreenshot(uri))
       .catch((error) => console.log(error));
+  }
+
+  async function handleSendFeedback() {
+    if (isSendingFeedback) {
+      return;
+    }
+    setIsSendingFeedback(true);
+    try {
+      await api.post("/feedback", {
+        type: feedbackType,
+        comment,
+        screenshot,
+      });
+
+      onFeedbackSent();
+    } catch (error) {
+      console.log(error);
+      setIsSendingFeedback(false);
+    }
   }
 
   return (
@@ -51,6 +77,7 @@ export function Form({ feedbackType, onFeedbackCancelled }: Props) {
         style={styles.input}
         placeholder="Algo não está funcionando bem? Queremos corrigir. Conte com detalhes o que está acontecendo..."
         placeholderTextColor={theme.colors.text_secondary}
+        onChangeText={setComment}
       />
       <View style={styles.footer}>
         <ScreenshotButton
@@ -58,7 +85,7 @@ export function Form({ feedbackType, onFeedbackCancelled }: Props) {
           onRemoveShot={() => setScreenshot(null)}
           screenshot={screenshot}
         />
-        <Button isLoading={false} />
+        <Button onPress={handleSendFeedback} isLoading={isSendingFeedback} />
       </View>
     </View>
   );
