@@ -46,6 +46,7 @@ export function Form({ feedbackType, onFeedbackCancelled }: Props) {
         </View>
       </View>
       <TextInput
+        autoCorrect={false}
         multiline
         style={styles.input}
         placeholder="Algo não está funcionando bem? Queremos corrigir. Conte com detalhes o que está acontecendo..."
